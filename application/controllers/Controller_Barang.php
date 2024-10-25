@@ -14,8 +14,12 @@ class Barang extends CI_Controller {
         $data->view('barang/index', $data);
     }
     public function add() {
+        $data['lokasi'] = $this->Inventory_model->get_lokasi();
+        $data['satuan'] = $this->Inventory_model->get_satuan();
+        $data['kategori'] = $this->Inventory_model->get_kategori();
+    
         if ($this->input->post()) {
-            $data = array(
+            $data_barang = array(
                 'kode_barang' => $this->input->post('kode_barang'),
                 'nama_barang' => $this->input->post('nama_barang'),
                 'kategori_barang' => $this->input->post('kategori_barang'),
@@ -25,18 +29,21 @@ class Barang extends CI_Controller {
                 'keterangan' => $this->input->post('keterangan') ? $this->input->post('keterangan') : NULL, 
                 'harga_barang' => $this->input->post('harga_barang') 
             );
-            if ($this->Barang_model->add_barang($data)) {
+            if ($this->Barang_model->add_barang($data_barang)) {
                 echo json_encode(['status' => 'success', 'message' => 'Barang berhasil ditambahkan.']);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Gagal menambahkan barang.']);
             }
             return;
         }
-        $this->load->view('barang/add');
+        $this->load->view('barang/add', $data); 
     }
     
     public function edit($id) {
         $data['barang'] = $this->Barang_model->get_barang($id);
+        $data['lokasi'] = $this->Inventory_model->get_lokasi();
+        $data['satuan'] = $this->Inventory_model->get_satuan();
+        $data['kategori'] = $this->Inventory_model->get_kategori();
     
         if ($this->input->post()) {
             $data_update = array(
@@ -58,6 +65,7 @@ class Barang extends CI_Controller {
         }
         $this->load->view('barang/edit', $data); 
     }
+    
     
     public function delete($id) {
         if (empty($id) || !is_numeric($id)) {

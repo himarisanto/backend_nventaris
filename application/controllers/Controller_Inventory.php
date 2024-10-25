@@ -5,11 +5,16 @@ class Controller_Inventory extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Inventory_model');
+        $this->load->library('form_validation');
+    }
+
+    private function list_items($type) {
+        $data[$type] = $this->Inventory_model->{"get_$type"}();
+        $this->load->view("inventory/$type/index", $data);
     }
 
     public function satuan() {
-        $data['satuan'] = $this->Inventory_model->get_satuan();
-        $this->load->view('inventory/satuan/index', $data);
+        $this->list_items('satuan');
     }
 
     public function create_satuan() {
@@ -17,9 +22,19 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function store_satuan() {
-        $data = $this->input->post();
-        $this->Inventory_model->insert_satuan($data);
-        redirect('controller_inventory/satuan');
+        $this->form_validation->set_rules('nama_satuan', 'Nama Satuan', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->create_satuan(); 
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->insert_satuan($data)) {
+                $this->session->set_flashdata('message', 'Satuan berhasil ditambahkan.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal menambahkan satuan.');
+            }
+            redirect('controller_inventory/satuan');
+        }
     }
 
     public function edit_satuan($id) {
@@ -28,20 +43,33 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function update_satuan($id) {
-        $data = $this->input->post();
-        $this->Inventory_model->update_satuan($id, $data);
-        redirect('controller_inventory/satuan'); 
+        $this->form_validation->set_rules('nama_satuan', 'Nama Satuan', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->edit_satuan($id); 
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->update_satuan($id, $data)) {
+                $this->session->set_flashdata('message', 'Satuan berhasil diperbarui.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal memperbarui satuan.');
+            }
+            redirect('controller_inventory/satuan');
+        }
     }
 
     public function delete_satuan($id) {
-        $this->Inventory_model->delete_satuan($id);
-        redirect('controller_inventory/satuan'); 
+        if ($this->Inventory_model->delete_satuan($id)) {
+            $this->session->set_flashdata('message', 'Satuan berhasil dihapus.');
+        } else {
+            $this->session->set_flashdata('message', 'Gagal menghapus satuan.');
+        }
+        redirect('controller_inventory/satuan');
     }
 
    
     public function kategori() {
-        $data['kategori'] = $this->Inventory_model->get_kategori();
-        $this->load->view('inventory/kategori/index', $data);
+        $this->list_items('kategori');
     }
 
     public function create_kategori() {
@@ -49,9 +77,19 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function store_kategori() {
-        $data = $this->input->post();
-        $this->Inventory_model->insert_kategori($data);
-        redirect('controller_inventory/kategori');
+        $this->form_validation->set_rules('nama_kategori', 'Nama Kategori', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->create_kategori();
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->insert_kategori($data)) {
+                $this->session->set_flashdata('message', 'Kategori berhasil ditambahkan.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal menambahkan kategori.');
+            }
+            redirect('controller_inventory/kategori');
+        }
     }
 
     public function edit_kategori($id) {
@@ -60,20 +98,32 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function update_kategori($id) {
-        $data = $this->input->post();
-        $this->Inventory_model->update_kategori($id, $data);
-        redirect('controller_inventory/kategori');
+        $this->form_validation->set_rules('nama_kategori', 'Nama Kategori', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->edit_kategori($id);
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->update_kategori($id, $data)) {
+                $this->session->set_flashdata('message', 'Kategori berhasil diperbarui.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal memperbarui kategori.');
+            }
+            redirect('controller_inventory/kategori');
+        }
     }
 
     public function delete_kategori($id) {
-        $this->Inventory_model->delete_kategori($id);
+        if ($this->Inventory_model->delete_kategori($id)) {
+            $this->session->set_flashdata('message', 'Kategori berhasil dihapus.');
+        } else {
+            $this->session->set_flashdata('message', 'Gagal menghapus kategori.');
+        }
         redirect('controller_inventory/kategori');
     }
 
- 
     public function lokasi() {
-        $data['lokasi'] = $this->Inventory_model->get_lokasi();
-        $this->load->view('inventory/lokasi/index', $data);
+        $this->list_items('lokasi');
     }
 
     public function create_lokasi() {
@@ -81,9 +131,19 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function store_lokasi() {
-        $data = $this->input->post();
-        $this->Inventory_model->insert_lokasi($data);
-        redirect('controller_inventory/lokasi');
+        $this->form_validation->set_rules('nama_lokasi', 'Nama Lokasi', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->create_lokasi();
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->insert_lokasi($data)) {
+                $this->session->set_flashdata('message', 'Lokasi berhasil ditambahkan.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal menambahkan lokasi.');
+            }
+            redirect('controller_inventory/lokasi');
+        }
     }
 
     public function edit_lokasi($id) {
@@ -92,13 +152,27 @@ class Controller_Inventory extends CI_Controller {
     }
 
     public function update_lokasi($id) {
-        $data = $this->input->post();
-        $this->Inventory_model->update_lokasi($id, $data);
-        redirect('controller_inventory/lokasi');
+        $this->form_validation->set_rules('nama_lokasi', 'Nama Lokasi', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->edit_lokasi($id);
+        } else {
+            $data = $this->input->post();
+            if ($this->Inventory_model->update_lokasi($id, $data)) {
+                $this->session->set_flashdata('message', 'Lokasi berhasil diperbarui.');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal memperbarui lokasi.');
+            }
+            redirect('controller_inventory/lokasi');
+        }
     }
 
     public function delete_lokasi($id) {
-        $this->Inventory_model->delete_lokasi($id);
+        if ($this->Inventory_model->delete_lokasi($id)) {
+            $this->session->set_flashdata('message', 'Lokasi berhasil dihapus.');
+        } else {
+            $this->session->set_flashdata('message', 'Gagal menghapus lokasi.');
+        }
         redirect('controller_inventory/lokasi');
     }
 }

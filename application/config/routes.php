@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 // $route['default_controller'] = 'welcome';
-
 $route['default_controller'] = 'barang'; 
+
 $route['barang'] = 'barang/index'; 
 $route['barang/add'] = 'barang/add'; 
 $route['barang/edit/(:num)'] = 'barang/edit/$1'; 
