@@ -3,10 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // $route['default_controller'] = 'welcome';
 $route['default_controller'] = 'barang'; 
 
-$route['barang'] = 'barang/index'; 
-$route['barang/add'] = 'barang/add'; 
-$route['barang/edit/(:num)'] = 'barang/edit/$1'; 
-$route['barang/delete/(:num)'] = 'barang/delete/$1'; 
+$route['api/barang'] = 'Barang/index';
+$route['api/barang/add'] = 'Barang/add'; 
+$route['api/barang/edit/(:num)'] = 'Barang/edit/$1';
+$route['api/barang/delete/(:num)'] = 'Barang/delete/$1';
 
 $route['satuan'] = 'Controller_Inventory/satuan'; 
 $route['satuan/create'] = 'Controller_Inventory/create_satuan';
